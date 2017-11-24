@@ -93,10 +93,18 @@ export default class App extends Component {
                 Get help signing in
               </TappableText>
 
-            </View>
+              </View>
 
+              <View style={viewStyles.orSeparatorView}>
+                <View style={viewStyles.orSeparatorLine}/>
 
-          </ScrollView>
+                <Text style={textStyles.orSeparatorTextStyle}>OR</Text>
+
+                <View style={viewStyles.orSeparatorLine}/>
+
+              </View>
+
+              </ScrollView>
 
         </ImageBackground>
 
@@ -156,7 +164,23 @@ const viewStyles = {
       alignItems: 'center',
       backgroundColor: 'transparent'
 
-
+    },
+    orSeparatorView: {
+      flexDirection: 'row',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      // backgroundColor: 'white',
+      marginTop: 10,
+      paddingHorizontal :5
+    },
+    orSeparatorLine: {
+      height: 1,
+      flex: 5,
+      backgroundColor: colors.instagramButtomBorderColor,
+      borderColor: colors.instagramButtomBorderColor,
+      borderWidth: 0.5,
+      marginHorizontal: 5
     }
 };
 
@@ -169,7 +193,14 @@ const textStyles={
   },
   forgottenLoginBold: {
     fontWeight: 'bold',
-    marginLeft: 6
+    marginLeft: 3
+  },
+  orSeparatorTextStyle: {
+    color: 'white',
+    backgroundColor: 'transparent',
+    fontWeight: 'bold',
+    fontSize: 13
+
   }
 
 };
