@@ -38,9 +38,28 @@ export default class App extends Component {
   }
 
   loginButtonPressed = () => {
-    console.log('Button was pressed by OGA BOSS');
+    console.log('Button was pressed by Selex');
   }
 
+  loginWithTwitterComponent = () =>{
+    return(
+      <View style={viewStyles.twitterLoginViewStyle}>
+      <Image
+        source={require('./src/images/icons/twitter_bird.png')}
+        style={viewStyles.twitterIcon}
+        resizeMode={'contain'}
+      />
+      <TappableText
+        textStyle={[textStyles.forgottenLogin,textStyles.forgottenLoginBold]}
+        textTapped={() => Linking.openURL(urls.twitterLogin)}
+      >
+        Get help signing in with twitter
+
+      </TappableText>
+
+      </View>
+    );
+  }
   loginScreenComponent = () => {
 
     return(
@@ -54,6 +73,7 @@ export default class App extends Component {
             backgroundColor="blue"
             barStyle="light-content"
           />
+
 
           <ScrollView>
 
@@ -92,17 +112,17 @@ export default class App extends Component {
               >
                 Get help signing in
               </TappableText>
-
               </View>
 
               <View style={viewStyles.orSeparatorView}>
                 <View style={viewStyles.orSeparatorLine}/>
 
                 <Text style={textStyles.orSeparatorTextStyle}>OR</Text>
-
                 <View style={viewStyles.orSeparatorLine}/>
 
               </View>
+
+                {this.loginWithTwitterComponent()}
 
               </ScrollView>
 
@@ -110,8 +130,6 @@ export default class App extends Component {
 
       );
     }
-
-//[1,2,3,3]
 
   render() {
     return (
@@ -170,7 +188,7 @@ const viewStyles = {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      // backgroundColor: 'white',
+      marginVertical: 14,
       marginTop: 10,
       paddingHorizontal :5
     },
@@ -181,7 +199,20 @@ const viewStyles = {
       borderColor: colors.instagramButtomBorderColor,
       borderWidth: 0.5,
       marginHorizontal: 5
+
+    },
+    twitterLoginViewStyle:{
+      flexDirection: 'row',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: "center"
+    },
+    twitterIcon:{
+      width: 17,
+      height: 17,
+      marginHorizontal: 4
     }
+
 };
 
 const textStyles={
@@ -200,6 +231,11 @@ const textStyles={
     backgroundColor: 'transparent',
     fontWeight: 'bold',
     fontSize: 13
+
+  },
+  twitterLogin: {
+    fontSize: 20
+  
 
   }
 
