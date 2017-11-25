@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, ImageBackground, Image,  StatusBar, ScrollView, Linking  } from 'react-native';
+import {Text, View, ImageBackground, Image,  StatusBar, ScrollView, Linking, WebView   } from 'react-native';
 import LoginButton from './src/components/LoginButton';
 import TappableText from './src/components/TappableText';
 import Dimensions from 'Dimensions';
@@ -26,7 +26,7 @@ const urls = {
   forgotInstagramLogin: 'https://www.instagram.com/accounts/password/reset',
   twitterLogin: 'https://twitter.com/login?lang=en',
   instagramSignUp: 'https://www.instagram.com/accounts/emailsignup/?hl=en',
-  instagramAuthLogin: 'https://api.instagram.com/oauth/authorize/?client_id=cda6dee7d8164a868150910407962f52&redirect_uri=http://www.kaitechconsulting.com&response_type=token&scope=basic+follower_list+comments+likes',
+  instagramAuthLogin: 'https://api.instagram.com/oauth/authorize/?client_id=0f4d5ad2bb554ff7b2078f2752828616&redirect_uri=http://kaitechconsulting.com&response_type=token&scope=basic+follower_list+comments+likes',
   instagramLogout: 'https://instagram.com/accounts/logout',
   instagramBase: 'https://www.instagram.com/',
 }
@@ -34,11 +34,57 @@ const urls = {
 export default class App extends Component {
 
   constructor(props){
+
     super(props);
+
+    this.state = {
+      authenticationURL: urls.instagramAuthLogin,
+      isUserLoggedIn: false,
+      accessToken: '',
+      displayAuthenticationWebView: false
+    }
   }
 
   loginButtonPressed = () => {
-    console.log('Button was pressed by Selex');
+    //this function is excuted wen either of the login buttons re pressed
+    this.setState({displayAuthenticationWebView: true});
+  }
+
+
+  onURLStateChange = (webViewState) => {
+    //this function is called everytime the URL in thr browser changes
+
+    const accessTokenSubString = 'access_token=';
+    console.log('current URL =' + webViewState.url);
+
+    //if the current url contains the substrings 'access_token' then extract the access_token
+    if(webViewState.url .includes(accessTokenSubString) ){
+
+      //safegaurd conditional (if) statement
+    if(this.state.accessToken.length < 1){
+
+      //the index of the begining of the access token
+      var startIndexofAccessToken = webViewState.url.lastIndexOf(accessTokenSubString) + accessTokenSubString.length;
+      var foundAccessToken = webViewState.url.substr(startIndexofAccessToken);
+
+      this.setState({accessToken: foundAccessToken, displayAuthenticationWebView: false});
+    }
+
+
+    }
+
+
+  }
+
+  displayAuthenticationWebViewComponent = () => {
+    return (
+      <WebView
+        source={{ uri: this.state.authenticationURL }}
+        startInLoadingState={true}
+        onNavigationStateChange={this.onURLStateChange}
+
+      />
+    );
   }
 
   loginWithTwitterComponent = () =>{
@@ -81,7 +127,7 @@ export default class App extends Component {
 
     return(
       <ImageBackground
-        source={require('./src/images/one.jpg')}
+        source={require('./src/images/two.jpg')}
         resizeMode={'cover'}
         style={viewStyles.container}
       >
@@ -151,12 +197,21 @@ export default class App extends Component {
     }
 
   render() {
-    return (
-      this.loginScreenComponent()
-    );
-  }
+    if (this.state.displayAuthenticationWebView == true) {
+        return(
+        this.displayAuthenticationWebViewComponent()
+        );
+      }
+        else {
+          return (
+            this.loginScreenComponent()
+          );
 
-}
+        }
+      }
+
+      }
+
 
 const viewStyles = {
   container:{

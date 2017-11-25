@@ -23,4 +23,4 @@ class TappableText extends Component {
 }
 
 
-export default TappableText;
+export default TappableText
