@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-import {Text, View, ImageBackground, Image,  StatusBar, ScrollView, Linking, WebView   } from 'react-native';
+import {Text, View, ImageBackground, Image,  StatusBar, ScrollView, Linking, WebView} from 'react-native';
 import LoginButton from './src/components/LoginButton';
 import TappableText from './src/components/TappableText';
 import InstaNavigationBar from './src/components/InstaNavigationBar';
+import NetworkManager from './src/model/NetworkManager';
 import Dimensions from 'Dimensions';
 
 
-const windowSize = Dimensions.get('window')
+
+const windowSize = Dimensions.get('window');
 const standardComponentWidth = windowSize.width * 0.82;
 
 
@@ -68,7 +70,18 @@ export default class App extends Component {
       var startIndexofAccessToken = webViewState.url.lastIndexOf(accessTokenSubString) + accessTokenSubString.length;
       var foundAccessToken = webViewState.url.substr(startIndexofAccessToken);
 
-      this.setState({accessToken: foundAccessToken, });
+      //make a network call to get the user deatils
+
+      this.apiManager = new NetworkManager(foundAccessToken);
+
+      this.apiManager.getSessionAndFeedData( (userData) => {
+        console.log(userData);
+      }, (feedData) => {
+        console.log(feedData);
+        this.setState({accessToken: foundAccessToken,});
+      });
+
+
     }
 
 
