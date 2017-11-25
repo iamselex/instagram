@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import {Text, View, ImageBackground, Image,  StatusBar, ScrollView, Linking, WebView   } from 'react-native';
 import LoginButton from './src/components/LoginButton';
 import TappableText from './src/components/TappableText';
+import InstaNavigationBar from './src/components/InstaNavigationBar';
 import Dimensions from 'Dimensions';
+
 
 const windowSize = Dimensions.get('window')
 const standardComponentWidth = windowSize.width * 0.82;
@@ -39,7 +41,6 @@ export default class App extends Component {
 
     this.state = {
       authenticationURL: urls.instagramAuthLogin,
-      isUserLoggedIn: false,
       accessToken: '',
       displayAuthenticationWebView: false
     }
@@ -67,7 +68,7 @@ export default class App extends Component {
       var startIndexofAccessToken = webViewState.url.lastIndexOf(accessTokenSubString) + accessTokenSubString.length;
       var foundAccessToken = webViewState.url.substr(startIndexofAccessToken);
 
-      this.setState({accessToken: foundAccessToken, displayAuthenticationWebView: false});
+      this.setState({accessToken: foundAccessToken, });
     }
 
 
@@ -86,6 +87,14 @@ export default class App extends Component {
       />
     );
   }
+  instagramFeedsScreenComponent = () => {
+      return (
+        <View style={{flex: 1}}>
+          <InstaNavigationBar />
+        </View>
+      );
+  }
+
 
   loginWithTwitterComponent = () =>{
     return(
@@ -197,20 +206,33 @@ export default class App extends Component {
     }
 
   render() {
-    if (this.state.displayAuthenticationWebView == true) {
-        return(
-        this.displayAuthenticationWebViewComponent()
-        );
-      }
-        else {
-          return (
-            this.loginScreenComponent()
+
+        var hasSuccesfullyLoggedIn = (this.state.accessToken.length > 1);
+        var shouldDisplayeLoginScreen = (this.state.displayAuthenticationWebView == false && this.state.displayAuthenticationWebView <1);
+
+
+          if(shouldDisplayeLoginScreen) {
+            return (
+              this.loginScreenComponent()
           );
 
         }
+
+        else if(hasSuccesfullyLoggedIn) {
+          return(
+            this.instagramFeedsScreenComponent()
+          );
+
+        }
+        else if (this.state.displayAuthenticationWebView == true) {
+          return(
+            this.displayAuthenticationWebViewComponent()
+        );
       }
 
       }
+
+}
 
 
 const viewStyles = {
