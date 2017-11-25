@@ -2,6 +2,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "dependencies": {
+    "axios": "^0.17.1",
     "babel": "^6.23.0",
     "expo": "^23.0.0",
     "react": "16.0.0",
